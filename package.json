@@ -1,5 +1,5 @@
 {
-  "homepage": "",
+  "homepage": "https://arm4nd7.github.io/generador-contactos-PuArWe-6/",
   "scripts": {
     "deploy": "gh-pages -d src"
   },
