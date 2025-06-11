@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styles.css">
+    <title>Lista Contactos</title>
+</head>
+
+<body>
+    <!--LOCAL STORAGE-->
+    <!--Forma de almacenar datos, configuraciones, fuentes y preferencias, guarda formularios-->
+    <!--almacenamiento que guarda datos aunque el navegador se haya cerrado-->
+    <!-- persiste la informacion de lado del cliente -->
+    <aside>
+        <form id="contact-form" action="">
+            <input id="nombre" value="" type="text" placeholder="nombre" required>
+            <input id="email" type="email" placeholder="correo" required>
+            <input id="telefono" type="tel" placeholder="telefono" maxlength="10" required>
+            <p id="error">Ingrese solo numeros en telefono</p>
+            <button id="subir-contacto" type="submit">Agregar Contacto</button>
+            <button id="eliminar" type="button">eliminar</button>
+            <button id="guardar" type="button">guardar</button>
+        </form>
+        <div id="mensaje-error"></div>
+    </aside>
+    <section>
+        <h2>lista de contactos</h2>
+        <div id="lista-contactos"></div>
+    </section>
+    <script src="script.js"></script>
+</body>
+
+</html>
