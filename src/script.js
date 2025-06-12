@@ -2,7 +2,6 @@ let form = document.getElementById("contact-form");
 let buttonSubirContacto = document.getElementById("subir-contacto");
 let buttonEliminar = document.getElementById("eliminar");
 let guardar = document.getElementById("guardar");
-let editar = document.querySelector(".edit-button");
 let lista = document.getElementById("lista-contactos");
 let idContacto = [];
 let contador = 0
@@ -20,21 +19,22 @@ function almacenarDatosFormulario() {
     localStorage.setItem("contactos", JSON.stringify(contactos));
 }
 
-function mostrarContacto(){
+function mostrarContacto() {
     let contactos = JSON.parse(localStorage.getItem("contactos")) || [];
     lista.innerHTML = ""
     contactos.forEach((c, i) => {
-        crearContacto(c,i);
-        buttonEditarContacto(i);
+        idContacto = i;
+        crearContacto(c, i);
+        buttonEditarContacto(c,i);
     })
 }
 
 // localStorage.clear();
-function crearContacto(c,i) {
+function crearContacto(c, i) {
     const card = document.createElement("div");
     card.classList.add("info-contacto");
     card.setAttribute("id", i);
-    idContacto = i;
+
     card.innerHTML = `<strong>${c.nombre}</strong> <br>  ${c.email} - ${c.telefono}`
     lista.appendChild(card);
     console.log("este indice", i);
@@ -47,21 +47,28 @@ function eliminarContacto() {
     mostrarContacto();
 }
 
-function buttonEditarContacto(i) {
+function buttonEditarContacto(c,i) {
     const editButton = document.createElement("button");
     editButton.textContent = "editar";
     editButton.classList.add("edit-button");
     editButton.setAttribute("id", i);
     lista.appendChild(editButton);
-}
-
-if(editar){
-    editar.addEventListener("click", () => {
+    editButton.addEventListener("click", () => {
         alert("Si vale");
-        // const contatoAEditar = parseInt(this.getAttribute("id"));
+        editarContacto(c);
     })
 }
 
+function editarContacto(c) {
+    if (c) {
+        let inputNombre = document.getElementById("nombre")
+        let inputEmail = document.getElementById("email")
+        let inputTelefono = document.getElementById("telefono")
+        inputNombre.value = c.nombre
+        inputEmail.value = c.email
+        inputTelefono.value = c.telefono
+    }
+}
 
 buttonEliminar.addEventListener("click", () => {
     eliminarContacto();
