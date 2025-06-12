@@ -33,7 +33,7 @@ aside{
     align-items: center;
     justify-content: center;
     flex-direction: column;
-    padding: 8px;
+    padding: 0 8px;
     height: 100vh;
     width: 30%;
     background-color: #76bd756e;
