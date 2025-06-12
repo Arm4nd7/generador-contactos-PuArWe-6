@@ -1,20 +1,15 @@
 let form = document.getElementById("contact-form");
 let buttonSubirContacto = document.getElementById("subir-contacto");
-let eliminarContacto = document.getElementById("eliminar");
+let buttonEliminar = document.getElementById("eliminar");
 let guardar = document.getElementById("guardar");
+let editar = document.querySelector(".edit-button");
 let lista = document.getElementById("lista-contactos");
-let indiceContacto = null;
+let idContacto = [];
 let contador = 0
 
 
-form.addEventListener("submit", (e) => {
-    e.preventDefault();
-    almacenarDatosFormulario();
-    mostrarContactos();
-    form.reset();
-})
 
-function almacenarDatosFormulario(){
+function almacenarDatosFormulario() {
     let contact = {
         nombre: document.getElementById("nombre").value,
         email: document.getElementById("email").value,
@@ -25,20 +20,70 @@ function almacenarDatosFormulario(){
     localStorage.setItem("contactos", JSON.stringify(contactos));
 }
 
-// localStorage.clear();
-function mostrarContactos() {
+function mostrarContacto(){
     let contactos = JSON.parse(localStorage.getItem("contactos")) || [];
-    lista.innerHTML = "";
+    lista.innerHTML = ""
     contactos.forEach((c, i) => {
-        const card = document.createElement("div");
-        card.classList.add("info-contacto");
-        card.setAttribute("id", i);
-        card.innerHTML = `<strong>${c.nombre} </strong> <br>  ${c.email} - ${c.telefono}`
-        lista.appendChild(card);
+        crearContacto(c,i);
+        buttonEditarContacto(i);
     })
 }
 
-mostrarContactos();
+// localStorage.clear();
+function crearContacto(c,i) {
+    const card = document.createElement("div");
+    card.classList.add("info-contacto");
+    card.setAttribute("id", i);
+    idContacto = i;
+    card.innerHTML = `<strong>${c.nombre}</strong> <br>  ${c.email} - ${c.telefono}`
+    lista.appendChild(card);
+    console.log("este indice", i);
+}
+
+function eliminarContacto() {
+    let contactos = JSON.parse(localStorage.getItem("contactos")) || [];
+    contactos.pop();
+    localStorage.setItem("contactos", JSON.stringify(contactos));
+    mostrarContacto();
+}
+
+function buttonEditarContacto(i) {
+    const editButton = document.createElement("button");
+    editButton.textContent = "editar";
+    editButton.classList.add("edit-button");
+    editButton.setAttribute("id", i);
+    lista.appendChild(editButton);
+}
+
+if(editar){
+    editar.addEventListener("click", () => {
+        alert("Si vale");
+        // const contatoAEditar = parseInt(this.getAttribute("id"));
+    })
+}
+
+
+buttonEliminar.addEventListener("click", () => {
+    eliminarContacto();
+});
+
+form.addEventListener("submit", (e) => {
+    e.preventDefault();
+    almacenarDatosFormulario();
+    mostrarContacto();
+    form.reset();
+});
+
+// crearContacto();
+mostrarContacto();
+
+/*sirve para eliminar por id*/
+// function eliminarContacto(idContactos) {
+//     let contactos = JSON.parse(localStorage.getItem("contactos")) || [];
+//     contactos.filter(id => id.pop())
+//     localStorage.setItem("contactos", JSON.stringify(contactos));
+// }
+
 
 // if (form) {
 //     validarDatos()
@@ -52,7 +97,7 @@ mostrarContactos();
 //         contactos.push(contact);
 //         localStorage.setItem("contactos", JSON.stringify(contactos));
 //         form.reset();
-//         mostrarContactos();
+//         crearContacto();
 //     });
 
 
@@ -82,41 +127,9 @@ mostrarContactos();
 //             botonSubirContacto.disabled = false;
 //             guardar.disabled = false;
 //             errorTelefono.style.display = "none"
-
 //         }
 //     });
-
-
 // }
-
-
-// eliminarContacto.addEventListener("click", () => {
-//     eliminarContactos();
-// });
-
-// function mostrarContactos() {
-//     let contactos = JSON.parse(localStorage.getItem("contactos")) || [];
-//     lista.innerHTML = "";
-//     contactos.forEach((c, i) => {
-//         const card = document.createElement("div");
-//         card.classList.add("info-contacto");
-//         card.setAttribute("info-i", i);
-//         card.innerHTML = `<strong>${c.nombre} </strong> <br>  ${c.email} - ${c.telefono}`
-//         lista.appendChild(card);
-//         buttoneditarContactos(i);
-//     })
-
-// }
-
-
-
-// function eliminarContactos() {
-//     let contactos = JSON.parse(localStorage.getItem("contactos")) || [];
-//     contactos.pop();
-//     localStorage.setItem("contactos", JSON.stringify(contactos));
-//     mostrarContactos();
-// }
-
 
 // function buttoneditarContactos(i) {
 //     const editButton = document.createElement("button");
@@ -164,11 +177,11 @@ mostrarContactos();
 //     c.telefono = inputTelefono.value;
 //     card.innerHTML = `<strong>${c.nombre} </strong> <br>  ${c.email} - ${c.telefono}`;
 //     localStorage.setItem("contactos", JSON.stringify(contactos));
-//     mostrarContactos();
+//     crearContacto();
 //     console.log(i)
 // }
 
-// mostrarContactos();
+// crearContacto();
 //eliminar contactos
 //validar que los campos sean de ese tipo
 //mostrar al usuario un mensaje claro de que no se cumple los requisitos
