@@ -81,7 +81,6 @@ form.addEventListener("submit", (e) => {
     form.reset();
 });
 
-// crearContacto();
 mostrarContacto();
 
 /*sirve para eliminar por id*/
