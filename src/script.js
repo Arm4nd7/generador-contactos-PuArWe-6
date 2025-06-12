@@ -3,9 +3,11 @@ let buttonSubirContacto = document.getElementById("subir-contacto");
 let buttonEliminar = document.getElementById("eliminar");
 let buttonGuardar = document.getElementById("guardar");
 let lista = document.getElementById("lista-contactos");
-let errorTelefono = document.getElementById("error");
+let errorCampoTelefono = document.getElementById("error-tipo-telefono");
+let errorCampoNombre = document.getElementById("error-tipo-nombre");
+let errorCampoEmail = document.getElementById("error-tipo-email");
 let idContacto = null;
-let contador = 0
+let contador = 0;
 
 function almacenarDatosFormulario() {
     let contact = {
@@ -92,12 +94,11 @@ buttonEliminar.addEventListener("click", () => {
     eliminarContacto();
 });
 
-function validarDatos() {
-        let inputNombre = document.getElementById("nombre");
-        let inputEmail = document.getElementById("email");
-        let inputTelefono = document.getElementById("telefono");
-    inputTelefono.addEventListener("input", () => {
-        if (isNaN(inputTelefono.value)) {
+
+/* AQUI COMIENZAN LOS ERRORES*/
+function validarErrorTelefono(idTelefono){
+    idTelefono.addEventListener("input", () => {
+        if (isNaN(idTelefono.value)) {
             buttonSubirContacto.disabled = true;
             buttonGuardar.disabled = true;
             errorTelefono.style.display = "block"
@@ -107,27 +108,44 @@ function validarDatos() {
             errorTelefono.style.display = "none"
         }
     });
-    inputEmail.addEventListener("input", () => {
-        if(!inputEmail.value.includes('@') || !inputEmail.value.includes('.')) {
+}
+
+function validarErrorEmail(idEmail){
+    idEmail.addEventListener("input", () => {
+        if (!idEmail.value.includes('@') || !idEmail.value.includes('.')) {
             buttonSubirContacto.disabled = true;
             buttonGuardar.disabled = true;
             errorTelefono.style.display = "block"
-        }else {
+        } else {
             buttonSubirContacto.disabled = false;
-            buttonGuardar.disabled = false;
+            // buttonGuardar.disabled = false;
             errorTelefono.style.display = "none"
         }
     })
-    if(inputNombre.value === "") {
-        buttonSubirContacto.disabled = true;
-        buttonGuardar.disabled = true;
-    }else{
-        buttonSubirContacto.disabled = false;
-        buttonGuardar.disabled = false;
-    }
 }
 
+function validarErrorNombre(idNombre){
+    idNombre.addEventListener("input", () => {
+        if (idNombre.value === "") {
+            // buttonSubirContacto.disabled = true;
+            buttonGuardar.disabled = true;
+        } else {
+            // buttonSubirContacto.disabled = false;
 
+        }
+    })
+}
+
+function validarDatos() {
+    let inputNombre = document.getElementById("nombre");
+    let inputEmail = document.getElementById("email");
+    let inputTelefono = document.getElementById("telefono");
+    validarErrorTelefono(inputTelefono)
+    validarErrorEmail(inputEmail)
+    validarErrorNombre(inputNombre)
+}
+
+console.log(idContacto)
 
 validarDatos();
 form.addEventListener("submit", (e) => {

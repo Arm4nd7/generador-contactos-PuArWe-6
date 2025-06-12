@@ -67,6 +67,12 @@ padding: 2rem;
     height: 50px;
 }
 
-#error{
+#error-tipo-telefono{
+    display: none;
+}
+#error-tipo-nombre{
+    display: none;
+}
+#error-tipo-email{
     display: none;
 }
