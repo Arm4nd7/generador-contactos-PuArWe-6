@@ -3,6 +3,7 @@ let botonSubirContacto = document.getElementById("subir-contacto");
 let eliminarContacto = document.getElementById("eliminar");
 let guardar = document.getElementById("guardar");
 let lista = document.getElementById("lista-contactos");
+let indiceContacto = null;
 let contador = 0
 
 
@@ -23,11 +24,10 @@ if (form) {
 }
 
 
-function validarDatos(i) {
+function validarDatos() {
     // let contactos = JSON.parse(localStorage.getItem("contactos")) || [];
     // const c = contactos[i];
     let inputTelefono = document.getElementById("telefono");
-    let div = document.getElementById("mensaje-error");
     let errorTelefono = document.getElementById("error");
     inputTelefono.addEventListener("input", () => {
         if (isNaN(inputTelefono.value)) {
@@ -56,7 +56,6 @@ function mostrarContactos() {
         card.innerHTML = `<strong>${c.nombre} </strong> <br>  ${c.email} - ${c.telefono}`
         lista.appendChild(card);
         buttoneditarContactos(i);
-        guardarEdicionContacto(i);
     })
 }
 
@@ -92,28 +91,33 @@ function editarContacto(i) {
         inputNombre.value = c.nombre
         inputEmail.value = c.email
         inputTelefono.value = c.telefono
-        console.log(c)
+        indiceContacto = i;
     }
 }
+
+    guardar.addEventListener("click", function () {
+        if (indiceContacto === null) return;
+        guardarEdicionContacto(indiceContacto)
+    })
+
 
 function guardarEdicionContacto(i) {
     guardar.setAttribute("info-i", i);
     let contactos = JSON.parse(localStorage.getItem("contactos")) || [];
     const c = contactos[i];
-    guardar.addEventListener("click", function () {
-        const card = document.querySelector(".info-contacto");
-        let inputNombre = document.getElementById("nombre");
-        let inputEmail = document.getElementById("email")
-        let inputTelefono = document.getElementById("telefono")
-        c.nombre = inputNombre.value
-        c.email = inputEmail.value
-        c.telefono = inputTelefono.value
-        card.innerHTML = `<strong>${c.nombre} </strong> <br>  ${c.email} - ${c.telefono}`;
-        localStorage.setItem("contactos", JSON.stringify(contactos));
-        mostrarContactos();
-    })
+    const card = document.querySelector(".info-contacto");
+    let inputNombre = document.getElementById("nombre");
+    let inputEmail = document.getElementById("email")
+    let inputTelefono = document.getElementById("telefono")
+    c.nombre = inputNombre.value
+    c.email = inputEmail.value
+    c.telefono = inputTelefono.value
+    card.innerHTML = `<strong>${c.nombre} </strong> <br>  ${c.email} - ${c.telefono}`;
+    localStorage.setItem("contactos", JSON.stringify(contactos));
+    mostrarContactos();
+    console.log(i)
 }
-// validarDatos()
+
 mostrarContactos();
 //eliminar contactos
 //validar que los campos sean de ese tipo

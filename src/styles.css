@@ -2,6 +2,7 @@ body{
     display: flex;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
+
 #contact-form{
     display: flex;
     flex-direction: column;
@@ -37,12 +38,14 @@ aside{
     width: 30%;
     background-color: #76bd756e;
 }
+
 section{
     height: 100vh;
     width: 70%;
     background-color: #40b383;
 
 }
+
 #lista-contactos{
 background-color: #e7ab7a7a;
 padding: 2rem;
@@ -52,12 +55,12 @@ padding: 2rem;
     border-radius: 0.4rem;
     border: 0 solid;
 }
+
 .info-contacto{
     letter-spacing: 2px;
     padding: 1rem 0;
 
 }
-
 
 .edit-button{
     width: 50px;
