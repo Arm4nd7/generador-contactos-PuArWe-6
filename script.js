@@ -1,120 +1,242 @@
 let form = document.getElementById("contact-form");
-let botonSubirContacto = document.getElementById("subir-contacto");
-let eliminarContacto = document.getElementById("eliminar");
-let guardar = document.getElementById("guardar");
+let buttonSubirContacto = document.getElementById("subir-contacto");
+let buttonEliminar = document.getElementById("eliminar");
+let buttonGuardar = document.getElementById("guardar");
+let buttonMostrar = document.getElementById("mostrar");
 let lista = document.getElementById("lista-contactos");
-let contador = 0
+let errorCampoTelefono = document.getElementById("error-tipo-telefono");
+let errorCampoNombre = document.getElementById("error-tipo-nombre");
+let errorCampoEmail = document.getElementById("error-tipo-email");
+let selectInput = document.getElementById("contar-contactos");
+let idContacto = null;
+const caracterEspecial = /[^a-zA-Z0-9\s@.]/;
 
-
-if (form) {
-    validarDatos()
-    form.addEventListener("submit", () => {
-        let contact = {
-            nombre: document.getElementById("nombre").value,
-            email: document.getElementById("email").value,
-            telefono: document.getElementById("telefono").value
-        }
-        let contactos = JSON.parse(localStorage.getItem("contactos")) || [];
-        contactos.push(contact);
-        localStorage.setItem("contactos", JSON.stringify(contactos));
-        form.reset();
-        mostrarContactos();
-    });
-}
-
-
-function validarDatos(i) {
-    // let contactos = JSON.parse(localStorage.getItem("contactos")) || [];
-    // const c = contactos[i];
-    let inputTelefono = document.getElementById("telefono");
-    let div = document.getElementById("mensaje-error");
-    let errorTelefono = document.getElementById("error");
-    inputTelefono.addEventListener("input", () => {
-        if (isNaN(inputTelefono.value)) {
-            botonSubirContacto.disabled = true;
-            errorTelefono.style.display = "block"
-        } else {
-            botonSubirContacto.disabled = false;
-            errorTelefono.style.display = "none"
-
-        }
-    });
-}
-
-
-eliminarContacto.addEventListener("click", () => {
-    eliminarContactos();
-});
-
-function mostrarContactos() {
+function almacenarDatosFormulario() {
+    let contact = {
+        nombre: document.getElementById("nombre").value,
+        email: document.getElementById("email").value,
+        telefono: document.getElementById("telefono").value
+    }
     let contactos = JSON.parse(localStorage.getItem("contactos")) || [];
-    lista.innerHTML = "";
-    contactos.forEach((c, i) => {
-        const card = document.createElement("div");
-        card.classList.add("info-contacto");
-        card.setAttribute("info-i", i);
-        card.innerHTML = `<strong>${c.nombre} </strong> <br>  ${c.email} - ${c.telefono}`
-        lista.appendChild(card);
-        buttoneditarContactos(i);
-        guardarEdicionContacto(i);
-    })
-}
-
-function eliminarContactos() {
-    let contactos = JSON.parse(localStorage.getItem("contactos")) || [];
-    contactos.pop();
+    contactos.push(contact);
     localStorage.setItem("contactos", JSON.stringify(contactos));
-    mostrarContactos();
 }
 
-
-function buttoneditarContactos(i) {
-    const editButton = document.createElement("button");
-    const div = document.getElementById("lista-contactos");
-    editButton.textContent = "editar";
-    editButton.classList.add("edit-button");
-    editButton.setAttribute("info-i", i);
-    div?.appendChild(editButton);
-    editButton.addEventListener("click", function () {
-        const contatoAEditar = parseInt(this.getAttribute("info-i"));
-        editarContacto(contatoAEditar);
-    })
-}
-
-function editarContacto(i) {
-
+function mostrarContacto() {
     let contactos = JSON.parse(localStorage.getItem("contactos")) || [];
-    const c = contactos[i];
-    if (c) {
-        let inputNombre = document.getElementById("nombre")
-        let inputEmail = document.getElementById("email")
-        let inputTelefono = document.getElementById("telefono")
-        inputNombre.value = c.nombre
-        inputEmail.value = c.email
-        inputTelefono.value = c.telefono
-        console.log(c)
+    lista.innerHTML = ""
+    contactos.forEach((c, i) => {
+        idContacto = i;
+        crearContacto(c, i);
+        buttonEditarContacto(c, i);
+    });
+}
+
+//filtro con etiqueta select para mostrar 5 o 10 contactos
+function filtroContacto() {
+    let contactos = JSON.parse(localStorage.getItem("contactos")) || [];
+    let valorLista = selectInput.value;
+    lista.innerHTML = '';
+    if (valorLista === "5") {
+        const primerosCincoContactos = contactos.slice(0, 5); //mostrar solo 5
+        primerosCincoContactos.forEach((c, i) => {
+            crearContacto(c, i);
+            buttonEditarContacto(c, i);
+            buttonSubirContacto.disabled = true;
+            buttonGuardar.disabled = true;
+            buttonEliminar.disabled = true;
+        });
+    } else if (valorLista === "10") {
+        const primerosCincoContactos = contactos.slice(0, 10); //mostrar solo 5
+        primerosCincoContactos.forEach((c, i) => {
+            crearContacto(c, i);
+            buttonEditarContacto(c, i);
+            buttonSubirContacto.disabled = true;
+            buttonGuardar.disabled = true;
+            buttonEliminar.disabled = true;
+        });
+    } else {
+        // Si el valor no es "5", muestras todos (o manejas otra lógica)
+        mostrarContacto();
+        buttonSubirContacto.disabled = false;
+        buttonGuardar.disabled = false;
+        buttonEliminar.disabled = false;
     }
 }
 
-function guardarEdicionContacto(i) {
-    guardar.setAttribute("info-i", i);
+
+function filtroContacto() {
     let contactos = JSON.parse(localStorage.getItem("contactos")) || [];
-    const c = contactos[i];
-    guardar.addEventListener("click", function () {
-        const card = document.querySelector(".info-contacto");
-        let inputNombre = document.getElementById("nombre");
-        let inputEmail = document.getElementById("email")
-        let inputTelefono = document.getElementById("telefono")
-        c.nombre = inputNombre.value
-        c.email = inputEmail.value
-        c.telefono = inputTelefono.value
-        card.innerHTML = `<strong>${c.nombre} </strong> <br>  ${c.email} - ${c.telefono}`;
-        localStorage.setItem("contactos", JSON.stringify(contactos));
-        mostrarContactos();
+    let valorLista = selectInput.value;
+    lista.innerHTML = '';
+    if (valorLista === "5") {
+        const primerosCincoContactos = contactos.slice(0, 5); //mostrar solo 5
+        primerosCincoContactos.forEach((c, i) => {
+            crearContacto(c, i);
+            buttonEditarContacto(c, i);
+            buttonSubirContacto.disabled = true;
+            buttonGuardar.disabled = true;
+            buttonEliminar.disabled = true;
+        });
+    } else if (valorLista === "10") {
+        const primerosCincoContactos = contactos.slice(0, 10); //mostrar solo 5
+        primerosCincoContactos.forEach((c, i) => {
+            crearContacto(c, i);
+            buttonEditarContacto(c, i);
+            buttonSubirContacto.disabled = true;
+            buttonGuardar.disabled = true;
+            buttonEliminar.disabled = true;
+        });
+    } else {
+        // Si el valor no es "5", muestras todos (o manejas otra lógica)
+        mostrarContacto();
+        buttonSubirContacto.disabled = false;
+        buttonGuardar.disabled = false;
+        buttonEliminar.disabled = false;
+    }
+
+
+}
+
+function crearContacto(c, i) {
+    const card = document.createElement("div");
+    card.classList.add("info-contacto");
+    card.setAttribute("id", i);
+    card.innerHTML = `<strong>${c.nombre}</strong> <br>  ${c.email} - ${c.telefono}`;
+    lista.appendChild(card);
+    console.log("este indice", i);
+}
+
+function eliminarContacto() {
+    let contactos = JSON.parse(localStorage.getItem("contactos")) || [];
+    contactos.pop();
+    localStorage.setItem("contactos", JSON.stringify(contactos));
+    mostrarContacto();
+}
+
+function buttonEditarContacto(c, i) {
+    const editButton = document.createElement("button");
+    editButton.textContent = "editar";
+    editButton.classList.add("edit-button");
+    editButton.setAttribute("id", i);
+    lista.appendChild(editButton);
+    editButton.addEventListener("click", () => {
+        buttonGuardar.disabled = false;
+        buttonSubirContacto.disabled = true;
+        buttonGuardar.style.display = "block";
+        capturaContactoEditar(c, i);
     })
 }
-// validarDatos()
-mostrarContactos();
+
+function capturaContactoEditar(c, i) {
+    if (c) {
+        let inputNombre = document.getElementById("nombre");
+        let inputEmail = document.getElementById("email");
+        let inputTelefono = document.getElementById("telefono");
+        inputNombre.value = c.nombre;
+        inputEmail.value = c.email;
+        inputTelefono.value = c.telefono;
+        idContacto = i;
+    }
+}
+
+//captura el valor del contacto para edicion
+function editarContacto(i) {
+    let contactos = JSON.parse(localStorage.getItem("contactos")) || [];
+    const c = contactos[i];
+    const card = document.querySelector(".info-contacto");
+    let inputNombre = document.getElementById("nombre");
+    let inputEmail = document.getElementById("email");
+    let inputTelefono = document.getElementById("telefono");
+    c.nombre = inputNombre.value;
+    c.email = inputEmail.value;
+    c.telefono = inputTelefono.value;
+    card.innerHTML = `<strong>${c.nombre} </strong> <br>  ${c.email} - ${c.telefono}`;
+    localStorage.setItem("contactos", JSON.stringify(contactos));
+}
+
+/* AQUI COMIENZAN Las validaciones de ERRORES*/
+
+function validarErrorTelefono(idTelefono) {
+    idTelefono.addEventListener("input", () => {
+        if (isNaN(idTelefono.value) || idTelefono.value === "") {
+            buttonSubirContacto.disabled = true;
+            errorCampoTelefono.style.display = "block"
+        } else {
+            errorCampoTelefono.style.display = "none"
+
+        }
+    });
+}
+
+function validarErrorEmail(idEmail) {
+    idEmail.addEventListener("input", () => {
+        if (!idEmail.value.includes('@') || !idEmail.value.includes('.') || caracterEspecial.test(idEmail.value)) {
+            buttonSubirContacto.disabled = true;
+            errorCampoEmail.style.display = "block"
+        } else {
+            errorCampoEmail.style.display = "none"
+            buttonSubirContacto.disabled = false;
+        }
+    })
+}
+
+function validarErrorNombre(idNombre) {
+    idNombre.addEventListener("input", () => {
+        if (caracterEspecial.test(idNombre.value)) {
+            buttonSubirContacto.disabled = true;
+            errorCampoNombre.style.display = "block"
+        } else {
+            errorCampoNombre.style.display = "none"
+        }
+    })
+}
+
+function validarDatos() {
+    let inputNombre = document.getElementById("nombre");
+    let inputEmail = document.getElementById("email");
+    let inputTelefono = document.getElementById("telefono");
+    validarErrorNombre(inputNombre);
+    validarErrorEmail(inputEmail);
+    validarErrorTelefono(inputTelefono);
+}
+
+console.log(idContacto)
+
+validarDatos();
+buttonGuardar.addEventListener("click", function () {
+    if (idContacto === null) return;
+    buttonSubirContacto.disabled = "true";
+    editarContacto(idContacto);
+    buttonSubirContacto.disabled = false;
+    buttonGuardar.disabled = true;
+    form.reset();
+    mostrarContacto();
+});
+
+buttonEliminar.addEventListener("click", () => {
+    eliminarContacto();
+});
+
+buttonMostrar.addEventListener("click", function () {
+    filtroContacto();
+    buttonGuardar.disabled = true;
+})
+
+form.addEventListener("submit", (e) => {
+    e.preventDefault();
+    almacenarDatosFormulario();
+    mostrarContacto();
+    if(buttonGuardar.disabled === true) {
+        buttonSubirContacto.disabled = false;
+    }else{
+        buttonSubirContacto.disabled = true;
+    }
+    form.reset();
+});
+
+mostrarContacto();
+
 //eliminar contactos
 //validar que los campos sean de ese tipo
 //mostrar al usuario un mensaje claro de que no se cumple los requisitos
