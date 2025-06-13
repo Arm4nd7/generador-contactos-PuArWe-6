@@ -13,23 +13,26 @@
     <!--Forma de almacenar datos, configuraciones, fuentes y preferencias, guarda formularios-->
     <!--almacenamiento que guarda datos aunque el navegador se haya cerrado-->
     <!-- persiste la informacion de lado del cliente -->
-    <aside>
-        <form id="contact-form" action="">
-            <input id="nombre" value="" type="text" placeholder="nombre" required>
-            <input id="email" type="email" placeholder="correo" required>
-            <input id="telefono" type="tel" placeholder="telefono" maxlength="10" required>
-            <p id="error-tipo-telefono">Ingrese solo numeros en telefono</p>
-            <p id="error-tipo-nombre">Llene correctamente el cambpo email</p>
-            <p id="error-tipo-email">Debe ingresar un nombre</p>
-            <button id="subir-contacto" type="submit">Agregar Contacto</button>
-            <button id="eliminar" type="button">eliminar</button>
-            <button id="guardar" type="button">guardar</button>
-        </form>
-    </aside>
-    <section>
-        <h2>lista de contactos</h2>
-        <div id="lista-contactos"></div>
-    </section>
+        <aside>
+            <div id="container">
+                <h1>Formulario</h1>
+                <form id="contact-form" action="">
+                    <input id="nombre" value="" type="text" placeholder="nombre" minlength="5" required>
+                    <input id="email" type="email" placeholder="correo" minlength="5" required>
+                    <input id="telefono" type="tel" placeholder="telefono" minlength="10" maxlength="10" required>
+                    <p id="error-tipo-telefono">Ingrese solo numeros en telefono</p>
+                    <p id="error-tipo-nombre">Debe ingresar un nombre</p>
+                    <p id="error-tipo-email">Llene correctamente el cambpo email</p>
+                    <button id="subir-contacto" type="submit">Agregar Contacto</button>
+                    <button id="eliminar" type="button">eliminar</button>
+                    <button id="guardar" type="button">guardar</button>
+                </form>
+            </div>
+        </aside>
+        <section>
+            <h2>lista de contactos</h2>
+            <div id="lista-contactos"></div>
+        </section>
     <script src="script.js"></script>
 </body>
 

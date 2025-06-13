@@ -1,78 +1,145 @@
-body{
+body {
     display: flex;
+    margin: 0;
+    min-height: 100vh;
+    max-width: 100vw;
+    overflow-x: hidden;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
-
-#contact-form{
+#contact-form {
     display: flex;
     flex-direction: column;
+    justify-content: center;
     align-items: center;
     gap: 2rem;
 }
 
-#contact-form>input{
+#contact-form>input {
     border-radius: 0.3rem;
+    font-size: 15px;
     height: 2rem;
     border: 0 solid;
 }
 
-#contact-form>button{
+#contact-form>button {
     border-radius: 0.4rem;
     height: 2rem;
     width: 150px;
     border: 0 solid;
+    cursor: pointer;
+    box-shadow: 2px 3px 5px white;
 }
 
-section>h2{
-    text-align: center;
-    font-size: 200%;
+#contact-form>button:hover {
+    background-color: #de2d2d92;
+    transition: all 0.5s ease-in;
 }
 
-aside{
+aside {
     display: flex;
-    align-items: center;
-    justify-content: center;
     flex-direction: column;
-    padding: 0 8px;
-    height: 100vh;
-    width: 30%;
-    background-color: #76bd756e;
+    align-items: center;
+    justify-content: flex-start;
+    min-width: 280px;
+    padding: 2rem 1rem;
+    background-color: #d6db8dda;
 }
 
-section{
-    height: 100vh;
-    width: 70%;
-    background-color: #40b383;
-
+#container{
+    display: grid;
+    text-align: center;
+    position: fixed;
 }
 
-#lista-contactos{
-background-color: #e7ab7a7a;
-padding: 2rem;
+section {
+    flex-grow: 1;
+    min-width: 400px;
+    padding: 2rem;
+    background-color: #1fbd7b94;
+}
+section>h2 {
+    text-align: center;
 }
 
-#lista-contactos>button{
+
+#lista-contactos {
+    display: grid;
+    grid-template-columns:  270px 70px 270px 70px ;
+    grid-template-areas: 1fr;
+    justify-content: center;
+    align-items: center;
+    border-radius: 2rem;
+    padding: 2rem;
+    margin: 0 1rem;
+    background-color: #cf254473;
+}
+
+#lista-contactos>button {
     border-radius: 0.4rem;
     border: 0 solid;
+    cursor: pointer;
+    box-shadow: 2px 3px 5px white;
+
 }
 
-.info-contacto{
+#lista-contactos>button:hover {
+    background-color: #1fbd7b94;
+    transition: all 0.3s ease-in-out;
+
+}
+
+.info-contacto {
+    width: 11rem;
     letter-spacing: 2px;
-    padding: 1rem 0;
-
+    padding: 0.8rem 2rem;
+    margin: 0.5rem 0;
+    background-color: white;
+    border-radius: 0.5rem;
 }
 
-.edit-button{
+.edit-button {
     width: 50px;
     height: 50px;
 }
 
-#error-tipo-telefono{
+#error-tipo-telefono {
+    display: none;
+    margin: 0;
+    padding: 0;
+
+}
+
+#error-tipo-nombre {
+    display: none;
+    margin: 0;
+    padding: 0;
+    padding: 0;
+
+}
+
+#error-tipo-email {
+    display: none;
+    margin: 0;
+}
+
+#guardar {
     display: none;
 }
-#error-tipo-nombre{
-    display: none;
+
+#guardar:hover {
+    background-color: #b769297a;
 }
-#error-tipo-email{
+
+#error-Caracter {
     display: none;
+    margin: 0;
+    padding: 0;
+
+}
+
+@media(width < 750px){
+
+    #lista-contactos{
+        display: inline-block;
+    }
 }

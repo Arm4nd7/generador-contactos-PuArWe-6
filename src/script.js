@@ -7,7 +7,7 @@ let errorCampoTelefono = document.getElementById("error-tipo-telefono");
 let errorCampoNombre = document.getElementById("error-tipo-nombre");
 let errorCampoEmail = document.getElementById("error-tipo-email");
 let idContacto = null;
-let contador = 0;
+const caracterEspecial = /[^a-zA-Z0-9\s@.]/;
 
 function almacenarDatosFormulario() {
     let contact = {
@@ -53,6 +53,9 @@ function buttonEditarContacto(c, i) {
     editButton.setAttribute("id", i);
     lista.appendChild(editButton);
     editButton.addEventListener("click", () => {
+        buttonGuardar.disabled = false;
+        buttonSubirContacto.disabled = true;
+        buttonGuardar.style.display = "block";
         capturaContactoEditar(c, i);
     })
 }
@@ -84,54 +87,40 @@ function editarContacto(i) {
     console.log(i)
 }
 
-buttonGuardar.addEventListener("click", function () {
-    if (idContacto === null) return;
-    editarContacto(idContacto);
-    mostrarContacto();
-});
+/* AQUI COMIENZAN Las validaciones de ERRORES*/
 
-buttonEliminar.addEventListener("click", () => {
-    eliminarContacto();
-});
-
-
-/* AQUI COMIENZAN LOS ERRORES*/
-function validarErrorTelefono(idTelefono){
+function validarErrorTelefono(idTelefono) {
     idTelefono.addEventListener("input", () => {
-        if (isNaN(idTelefono.value)) {
+        if (isNaN(idTelefono.value) || idTelefono.value === "") {
             buttonSubirContacto.disabled = true;
-            buttonGuardar.disabled = true;
-            errorTelefono.style.display = "block"
+            errorCampoTelefono.style.display = "block"
         } else {
+            errorCampoTelefono.style.display = "none"
             buttonSubirContacto.disabled = false;
-            buttonGuardar.disabled = false;
-            errorTelefono.style.display = "none"
+
         }
     });
 }
 
-function validarErrorEmail(idEmail){
+function validarErrorEmail(idEmail) {
     idEmail.addEventListener("input", () => {
-        if (!idEmail.value.includes('@') || !idEmail.value.includes('.')) {
+        if (!idEmail.value.includes('@') || !idEmail.value.includes('.') || caracterEspecial.test(idEmail.value)) {
             buttonSubirContacto.disabled = true;
-            buttonGuardar.disabled = true;
-            errorTelefono.style.display = "block"
+            errorCampoEmail.style.display = "block"
         } else {
-            buttonSubirContacto.disabled = false;
-            // buttonGuardar.disabled = false;
-            errorTelefono.style.display = "none"
+            errorCampoEmail.style.display = "none"
         }
     })
 }
 
-function validarErrorNombre(idNombre){
+function validarErrorNombre(idNombre) {
     idNombre.addEventListener("input", () => {
-        if (idNombre.value === "") {
-            // buttonSubirContacto.disabled = true;
-            buttonGuardar.disabled = true;
+        if (caracterEspecial.test(idNombre.value)) {
+            buttonSubirContacto.disabled = true;
+            errorCampoNombre.style.display = "block"
         } else {
-            // buttonSubirContacto.disabled = false;
-
+            buttonSubirContacto.disabled = false;
+            errorCampoNombre.style.display = "none"
         }
     })
 }
@@ -140,14 +129,26 @@ function validarDatos() {
     let inputNombre = document.getElementById("nombre");
     let inputEmail = document.getElementById("email");
     let inputTelefono = document.getElementById("telefono");
-    validarErrorTelefono(inputTelefono)
-    validarErrorEmail(inputEmail)
-    validarErrorNombre(inputNombre)
+    validarErrorNombre(inputNombre);
+    validarErrorEmail(inputEmail);
+    validarErrorTelefono(inputTelefono);
 }
 
 console.log(idContacto)
 
 validarDatos();
+buttonGuardar.addEventListener("click", function () {
+    if (idContacto === null) return;
+    buttonSubirContacto.disabled = "true";
+    editarContacto(idContacto);
+    buttonSubirContacto.disabled = false;
+    buttonGuardar.disabled = true;
+    form.reset();
+    mostrarContacto();
+});
+buttonEliminar.addEventListener("click", () => {
+    eliminarContacto();
+});
 form.addEventListener("submit", (e) => {
     e.preventDefault();
     almacenarDatosFormulario();
