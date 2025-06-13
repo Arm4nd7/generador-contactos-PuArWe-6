@@ -22,7 +22,7 @@ body {
     border: 0 solid;
 }
 
-#contact-form>button {
+#contact-form>button, #mostrar {
     border-radius: 0.4rem;
     height: 2rem;
     width: 150px;

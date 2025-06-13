@@ -40,13 +40,30 @@ function filtroContacto() {
     if (valorLista === "5") {
         const primerosCincoContactos = contactos.slice(0, 5); //mostrar solo 5
         primerosCincoContactos.forEach((c, i) => {
-            crearContacto(c, i); 
+            crearContacto(c, i);
             buttonEditarContacto(c, i);
+            buttonSubirContacto.disabled = true;
+            buttonGuardar.disabled = true;
+            buttonEliminar.disabled = true;
+        });
+    } else if (valorLista === "10") {
+        const primerosCincoContactos = contactos.slice(0, 10); //mostrar solo 5
+        primerosCincoContactos.forEach((c, i) => {
+            crearContacto(c, i);
+            buttonEditarContacto(c, i);
+            buttonSubirContacto.disabled = true;
+            buttonGuardar.disabled = true;
+            buttonEliminar.disabled = true;
         });
     } else {
         // Si el valor no es "5", muestras todos (o manejas otra lógica)
         mostrarContacto();
+        buttonSubirContacto.disabled = false;
+        buttonGuardar.disabled = false;
+        buttonEliminar.disabled = false;
     }
+
+
 }
 
 function crearContacto(c, i) {
@@ -170,7 +187,7 @@ buttonEliminar.addEventListener("click", () => {
     eliminarContacto();
 });
 
-buttonMostrar.addEventListener("click", function() {
+buttonMostrar.addEventListener("click", function () {
     filtroContacto();
 })
 
