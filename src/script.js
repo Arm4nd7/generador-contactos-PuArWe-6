@@ -2,10 +2,12 @@ let form = document.getElementById("contact-form");
 let buttonSubirContacto = document.getElementById("subir-contacto");
 let buttonEliminar = document.getElementById("eliminar");
 let buttonGuardar = document.getElementById("guardar");
+let buttonMostrar = document.getElementById("mostrar");
 let lista = document.getElementById("lista-contactos");
 let errorCampoTelefono = document.getElementById("error-tipo-telefono");
 let errorCampoNombre = document.getElementById("error-tipo-nombre");
 let errorCampoEmail = document.getElementById("error-tipo-email");
+let selectInput = document.getElementById("contar-contactos");
 let idContacto = null;
 const caracterEspecial = /[^a-zA-Z0-9\s@.]/;
 
@@ -28,6 +30,23 @@ function mostrarContacto() {
         crearContacto(c, i);
         buttonEditarContacto(c, i);
     })
+}
+
+
+function filtroContacto() {
+    let contactos = JSON.parse(localStorage.getItem("contactos")) || [];
+    let valorLista = selectInput.value;
+    lista.innerHTML = '';
+    if (valorLista === "5") {
+        const primerosCincoContactos = contactos.slice(0, 5); //mostrar solo 5
+        primerosCincoContactos.forEach((c, i) => {
+            crearContacto(c, i); 
+            buttonEditarContacto(c, i);
+        });
+    } else {
+        // Si el valor no es "5", muestras todos (o manejas otra lógica)
+        mostrarContacto();
+    }
 }
 
 function crearContacto(c, i) {
@@ -146,9 +165,15 @@ buttonGuardar.addEventListener("click", function () {
     form.reset();
     mostrarContacto();
 });
+
 buttonEliminar.addEventListener("click", () => {
     eliminarContacto();
 });
+
+buttonMostrar.addEventListener("click", function() {
+    filtroContacto();
+})
+
 form.addEventListener("submit", (e) => {
     e.preventDefault();
     almacenarDatosFormulario();
