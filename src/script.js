@@ -29,7 +29,39 @@ function mostrarContacto() {
         idContacto = i;
         crearContacto(c, i);
         buttonEditarContacto(c, i);
-    })
+    });
+}
+
+//filtro con etiqueta select para mostrar 5 o 10 contactos
+function filtroContacto() {
+    let contactos = JSON.parse(localStorage.getItem("contactos")) || [];
+    let valorLista = selectInput.value;
+    lista.innerHTML = '';
+    if (valorLista === "5") {
+        const primerosCincoContactos = contactos.slice(0, 5); //mostrar solo 5
+        primerosCincoContactos.forEach((c, i) => {
+            crearContacto(c, i);
+            buttonEditarContacto(c, i);
+            buttonSubirContacto.disabled = true;
+            buttonGuardar.disabled = true;
+            buttonEliminar.disabled = true;
+        });
+    } else if (valorLista === "10") {
+        const primerosCincoContactos = contactos.slice(0, 10); //mostrar solo 5
+        primerosCincoContactos.forEach((c, i) => {
+            crearContacto(c, i);
+            buttonEditarContacto(c, i);
+            buttonSubirContacto.disabled = true;
+            buttonGuardar.disabled = true;
+            buttonEliminar.disabled = true;
+        });
+    } else {
+        // Si el valor no es "5", muestras todos (o manejas otra lógica)
+        mostrarContacto();
+        buttonSubirContacto.disabled = false;
+        buttonGuardar.disabled = false;
+        buttonEliminar.disabled = false;
+    }
 }
 
 
@@ -70,7 +102,7 @@ function crearContacto(c, i) {
     const card = document.createElement("div");
     card.classList.add("info-contacto");
     card.setAttribute("id", i);
-    card.innerHTML = `<strong>${c.nombre}</strong> <br>  ${c.email} - ${c.telefono}`
+    card.innerHTML = `<strong>${c.nombre}</strong> <br>  ${c.email} - ${c.telefono}`;
     lista.appendChild(card);
     console.log("este indice", i);
 }
@@ -98,29 +130,29 @@ function buttonEditarContacto(c, i) {
 
 function capturaContactoEditar(c, i) {
     if (c) {
-        let inputNombre = document.getElementById("nombre")
-        let inputEmail = document.getElementById("email")
-        let inputTelefono = document.getElementById("telefono")
-        inputNombre.value = c.nombre
-        inputEmail.value = c.email
-        inputTelefono.value = c.telefono
+        let inputNombre = document.getElementById("nombre");
+        let inputEmail = document.getElementById("email");
+        let inputTelefono = document.getElementById("telefono");
+        inputNombre.value = c.nombre;
+        inputEmail.value = c.email;
+        inputTelefono.value = c.telefono;
         idContacto = i;
     }
 }
 
+//captura el valor del contacto para edicion
 function editarContacto(i) {
     let contactos = JSON.parse(localStorage.getItem("contactos")) || [];
     const c = contactos[i];
     const card = document.querySelector(".info-contacto");
     let inputNombre = document.getElementById("nombre");
-    let inputEmail = document.getElementById("email")
-    let inputTelefono = document.getElementById("telefono")
+    let inputEmail = document.getElementById("email");
+    let inputTelefono = document.getElementById("telefono");
     c.nombre = inputNombre.value;
     c.email = inputEmail.value;
     c.telefono = inputTelefono.value;
     card.innerHTML = `<strong>${c.nombre} </strong> <br>  ${c.email} - ${c.telefono}`;
     localStorage.setItem("contactos", JSON.stringify(contactos));
-    console.log(i)
 }
 
 /* AQUI COMIENZAN Las validaciones de ERRORES*/
@@ -132,7 +164,6 @@ function validarErrorTelefono(idTelefono) {
             errorCampoTelefono.style.display = "block"
         } else {
             errorCampoTelefono.style.display = "none"
-            buttonSubirContacto.disabled = false;
 
         }
     });
@@ -145,6 +176,7 @@ function validarErrorEmail(idEmail) {
             errorCampoEmail.style.display = "block"
         } else {
             errorCampoEmail.style.display = "none"
+            buttonSubirContacto.disabled = false;
         }
     })
 }
@@ -155,7 +187,6 @@ function validarErrorNombre(idNombre) {
             buttonSubirContacto.disabled = true;
             errorCampoNombre.style.display = "block"
         } else {
-            buttonSubirContacto.disabled = false;
             errorCampoNombre.style.display = "none"
         }
     })
@@ -189,20 +220,23 @@ buttonEliminar.addEventListener("click", () => {
 
 buttonMostrar.addEventListener("click", function () {
     filtroContacto();
+    buttonGuardar.disabled = true;
 })
 
 form.addEventListener("submit", (e) => {
     e.preventDefault();
     almacenarDatosFormulario();
     mostrarContacto();
+    if(buttonGuardar.disabled === true) {
+        buttonSubirContacto.disabled = false;
+    }else{
+        buttonSubirContacto.disabled = true;
+    }
     form.reset();
 });
 
-
 mostrarContacto();
 
-
-// crearContacto();
 //eliminar contactos
 //validar que los campos sean de ese tipo
 //mostrar al usuario un mensaje claro de que no se cumple los requisitos
